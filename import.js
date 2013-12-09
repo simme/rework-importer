@@ -36,6 +36,7 @@ function Import(opts) {
   this.path   = opts.path || process.cwd();
   this.visit  = this.visit.bind(this);
   this.import = this.import.bind(this);
+  this.map    = opts.map || [];
 }
 
 Import.prototype.visit = function (node, index, arr) {
@@ -52,7 +53,9 @@ Import.prototype.rule = function (rule, index, base) {
   if (rule.selectors[0] == '@import') {
     var ast   = rule.declarations.map(this.import);
     var rules = [];
-    ast.forEach(function (item) {
+    ast.filter(function (item) {
+      return !!item;
+    }).forEach(function (item) {
       rules = rules.concat(item.rules);
     });
 
@@ -71,15 +74,23 @@ Import.prototype.import = function (declaration) {
 
   var file = declaration.value;
   var load = path.join(this.path, file);
-  var data = fs.readFileSync(load, this.opts.encoding || 'utf-8');
+
+  // Skip circular imports.
+  if (this.map.indexOf(load) !== -1) {
+    return false;
+  }
+
+  var data = fs.readFileSync(load, this.opts.encoding || 'utf8');
 
   if (this.opts.whitespace) {
     data = whitespace(data);
   }
 
   // Create AST and look for imports in imported code.
-  // @TODO: Check for circular imports. For now don't be stupid.
-  var ast = rework(data).use(module.exports(this.opts));
+  var opts = this.opts;
+  this.map.push(load);
+  opts.map = this.map;
+  var ast = rework(data).use(module.exports(opts));
   return ast.obj.stylesheet;
 };
 

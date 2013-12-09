@@ -18,7 +18,7 @@ suite('Import', function () {
     assert.equal(r('exp1.css'), css);
   });
 
-  test('Nested imports works', function () {
+  test('Nested imports works.', function () {
     var str = r('test2.css');
     var css = rework(str)
       .use(imprt({
@@ -28,7 +28,7 @@ suite('Import', function () {
     assert.equal(r('exp2.css'), css);
   });
 
-  test('Multiple imports works', function () {
+  test('Multiple imports works.', function () {
     var str = r('test3.css');
     var css = rework(str)
       .use(imprt({
@@ -36,6 +36,16 @@ suite('Import', function () {
       }))
       .toString() + '\n';
     assert.equal(r('exp3.css'), css);
+  });
+
+  test('Circular imports are blocked.', function () {
+    var str = r('test4.css');
+    var css = rework(str)
+      .use(imprt({
+        path: __dirname
+      }))
+      .toString() + '\n';
+    assert.equal(r('exp4.css'), css);
   });
 });
 
