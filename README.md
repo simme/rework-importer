@@ -81,7 +81,7 @@ moment though, so don't be stupid. Mm kay?
 ## Known issues
 
 * Imports currently, probably, only work at the "top level" stylesheet. Not
-inside `@keyframes`` or `@media` declarations.`
+inside `@keyframes` or `@media` declarations.`
 
 ## License
 

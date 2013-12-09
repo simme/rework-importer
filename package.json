@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "description": "Import statements for Rework.",
   "main": "import",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/simme/rework-import"
+  },
   "scripts": {
     "test": "mocha -u tdd"
   },
