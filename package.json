@@ -1,0 +1,21 @@
+{
+  "name": "rework-import",
+  "version": "0.0.1",
+  "description": "Import statements for Rework.",
+  "main": "import",
+  "scripts": {
+    "test": "mocha -u tdd"
+  },
+  "keywords": [
+    "rework",
+    "import"
+  ],
+  "author": "Simon Ljungberg <hi@iamsim.me>",
+  "license": "MIT",
+  "peerDependencies": {
+    "rework": "~0.18.3"
+  },
+  "dependencies": {
+    "css-whitespace": "~1.1.0"
+  }
+}
