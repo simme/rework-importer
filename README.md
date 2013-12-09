@@ -8,10 +8,6 @@ import other CSS files.
 To properly use the import plugin you should make sure it's the first you call
 use on. This allows your other plugins to do their work on the imported CSS.
 
-**Notice:** this module does not use "native" CSS `@import url()` style syntax.
-If you want that, look at this [module](https://github.com/jxson/rework-import)
-that I totally missed when I did my first search for an import module.
-
 ```javascript
 var rework = require('rework');
 var imprt  = require('rework-importer');
@@ -62,6 +58,32 @@ h1 {
 }
 ```
 
+**Or with _"native"_ `@import`-syntax:**
+
+_style.css_
+```css
+@import url('foobar.css');
+body {
+  background: #000;
+}
+```
+
+_foobar.css_
+```css
+* { box-sizing: border-box; }
+```
+
+_Resulting CSS_
+```css
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: #000;
+}
+```
+
 ## Options
 
 Available options are:
@@ -76,11 +98,6 @@ whitespace](https://npmjs.org/package/css-whitespace) in your imported files.
 
 The syntax might look a bit odd, but that's because we need Rework to parse it
 like CSS to get it into the inital AST.
-
-## Nesting
-
-Imported CSS can import other CSS. There's no check for circular imports at the
-moment though, so don't be stupid. Mm kay?
 
 ## Known issues
 
