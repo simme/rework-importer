@@ -21,6 +21,8 @@ rework(fs.readFileSync('style.css'), 'utf-8')
   .toString();
 ```
 
+**Many imports in one block.**
+
 _style.css_
 
 ```css
@@ -93,11 +95,6 @@ relative to this path.
 * **whitespace**, set to true if you want to use [significant
 whitespace](https://npmjs.org/package/css-whitespace) in your imported files.
 * **encoding**, if your CSS is anything other then UTF-8 encoded.
-
-## Syntax
-
-The syntax might look a bit odd, but that's because we need Rework to parse it
-like CSS to get it into the inital AST.
 
 ## Known issues
 
