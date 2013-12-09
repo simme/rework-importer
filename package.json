@@ -1,6 +1,6 @@
 {
-  "name": "rework-import",
-  "version": "0.1.0",
+  "name": "rework-importer",
+  "version": "0.1.1",
   "description": "Import statements for Rework.",
   "main": "import",
   "repository": {
@@ -23,3 +23,4 @@
     "css-whitespace": "~1.1.0"
   }
 }
+
