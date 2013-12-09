@@ -31,12 +31,12 @@ module.exports = function (opts) {
 // ## Importer
 //
 function Import(opts) {
-  opts        = opts || {};
-  this.opts   = opts;
-  this.path   = opts.path || process.cwd();
-  this.visit  = this.visit.bind(this);
-  this.import = this.import.bind(this);
-  this.map    = opts.map || [];
+  opts            = opts || {};
+  this.opts       = opts;
+  this.path       = opts.path || process.cwd();
+  this.visit      = this.visit.bind(this);
+  this.importFile = this.importFile.bind(this);
+  this.map        = opts.map || [];
 }
 
 Import.prototype.visit = function (node, index, arr) {
@@ -49,9 +49,21 @@ Import.prototype.stylesheet = function (stylesheet) {
   stylesheet.rules.forEach(this.visit);
 };
 
+Import.prototype.import = function (node, index, arr) {
+  var regex    = /url\(['"]?(.*?)['"]?\)/;
+  var filename = node.import.match(regex);
+  if (filename && filename[1]) {
+    var ast = this.parseFile(filename[1]);
+    arr.splice(index, 1);
+    ast.rules.forEach(function (rule) {
+      arr.splice(0, 0, rule);
+    });
+  }
+};
+
 Import.prototype.rule = function (rule, index, base) {
   if (rule.selectors[0] == '@import') {
-    var ast   = rule.declarations.map(this.import);
+    var ast   = rule.declarations.map(this.importFile);
     var rules = [];
     ast.filter(function (item) {
       return !!item;
@@ -69,10 +81,12 @@ Import.prototype.rule = function (rule, index, base) {
   }
 };
 
-Import.prototype.import = function (declaration) {
+Import.prototype.importFile = function (declaration) {
   if (declaration.property !== 'file') return;
+  return this.parseFile(declaration.value);
+};
 
-  var file = declaration.value;
+Import.prototype.parseFile = function (file) {
   var load = path.join(this.path, file);
 
   // Skip circular imports.

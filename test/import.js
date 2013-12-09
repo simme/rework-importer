@@ -47,6 +47,16 @@ suite('Import', function () {
       .toString() + '\n';
     assert.equal(r('exp4.css'), css);
   });
+
+  test('"Native" import works.', function () {
+    var str = r('test5.css');
+    var css = rework(str)
+      .use(imprt({
+        path: __dirname
+      }))
+      .toString() + '\n';
+    assert.equal(r('exp4.css'), css);
+  });
 });
 
 function r(name) {
