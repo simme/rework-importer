@@ -5,7 +5,7 @@
   "main": "import",
   "repository": {
     "type": "git",
-    "url": "https://github.com/simme/rework-import"
+    "url": "https://github.com/simme/rework-importer"
   },
   "scripts": {
     "test": "mocha -u tdd"
