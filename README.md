@@ -1,4 +1,4 @@
-# Rework Import
+# Rework Importer
 
 [Rework](https://npmjs.org/package/rework) plugin for allowing CSS files to
 import other CSS files.
@@ -14,7 +14,7 @@ that I totally missed when I did my first search for an import module.
 
 ```javascript
 var rework = require('rework');
-var imprt  = require('rework-import');
+var imprt  = require('rework-importer');
 var fs     = require('fs');
 
 // Not recommended way of loading styles...
