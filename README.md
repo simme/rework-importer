@@ -8,6 +8,10 @@ import other CSS files.
 To properly use the import plugin you should make sure it's the first you call
 use on. This allows your other plugins to do their work on the imported CSS.
 
+**Notice:** this module does not use "native" CSS `@import url()` style syntax.
+If you want that, look at this [module](https://github.com/jxson/rework-import)
+that I totally missed when I did my first search for an import module.
+
 ```javascript
 var rework = require('rework');
 var imprt  = require('rework-import');
