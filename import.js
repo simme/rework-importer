@@ -1,7 +1,7 @@
 //
 // # Import
 //
-// Subsitute `@import 'filename'` with the contents of `filename`.
+// Subsitute `@import { file: filename; }` with the contents of `filename`.
 //
 
 /*jslint node: true */

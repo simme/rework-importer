@@ -78,6 +78,11 @@ like CSS to get it into the inital AST.
 Imported CSS can import other CSS. There's no check for circular imports at the
 moment though, so don't be stupid. Mm kay?
 
+## Known issues
+
+* Imports currently, probably, only work at the "top level" stylesheet. Not
+inside `@keyframes`` or `@media` declarations.`
+
 ## License
 
 MIT
