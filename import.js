@@ -18,7 +18,6 @@ var rework     = require('rework');
 // * **opts**, options object. May contain the following:
 //
 //   * path: base path for resolving imports.
-//   * ext: optional extension, defaults to `css`.
 //   * whitespace: boolean, set to true if imported files use significant
 //     whitespace instead of curlies.
 //
@@ -72,7 +71,7 @@ Import.prototype.import = function (declaration) {
 
   var file = declaration.value;
   var load = path.join(this.path, file);
-  var data = fs.readFileSync(load, this.encoding || 'utf-8');
+  var data = fs.readFileSync(load, this.opts.encoding || 'utf-8');
 
   if (this.opts.whitespace) {
     data = whitespace(data);
