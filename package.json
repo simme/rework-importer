@@ -1,6 +1,6 @@
 {
   "name": "rework-importer",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Import statements for Rework.",
   "main": "import",
   "repository": {
@@ -16,9 +16,6 @@
   ],
   "author": "Simon Ljungberg <hi@iamsim.me>",
   "license": "MIT",
-  "peerDependencies": {
-    "rework": "~0.18.3"
-  },
   "dependencies": {
     "css-whitespace": "~1.1.0"
   }
