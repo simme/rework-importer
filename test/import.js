@@ -55,7 +55,7 @@ suite('Import', function () {
         path: __dirname
       }))
       .toString() + '\n';
-    assert.equal(r('exp4.css'), css);
+    assert.equal(r('exp5.css'), css);
   });
 });
 

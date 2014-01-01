@@ -40,13 +40,16 @@ function Import(opts) {
 }
 
 Import.prototype.visit = function (node, index, arr) {
+  if (!node) return;
   var type = node.type || 'stylesheet';
   if (!this[type]) return;
   this[type](node, index, arr);
 };
 
 Import.prototype.stylesheet = function (stylesheet) {
-  stylesheet.rules.forEach(this.visit);
+  for (var i = stylesheet.rules.length; i >= 0; i-=1) {
+    this.visit(stylesheet.rules[i], i, stylesheet.rules);
+  }
 };
 
 Import.prototype.import = function (node, index, arr) {
@@ -54,9 +57,12 @@ Import.prototype.import = function (node, index, arr) {
   var filename = node.import.match(regex);
   if (filename && filename[1]) {
     var ast = this.parseFile(filename[1]);
+    var i = 0;
     arr.splice(index, 1);
+
     ast.rules.forEach(function (rule) {
-      arr.splice(0, 0, rule);
+      arr.splice(0 + i + index, 0, rule);
+      i++;
     });
   }
 };
@@ -71,11 +77,11 @@ Import.prototype.rule = function (rule, index, base) {
       rules = rules.concat(item.rules);
     });
 
-    base.splice(index, 1);
+    var removed = base.splice(index, 1);
     // Insert rules at same index
     var i = 0; // To make imports in order.
     rules.forEach(function (rule) {
-      base.splice(index + i, 0, rule);
+      var removed = base.splice(index + i, 0, rule);
       i++;
     });
   }
