@@ -1,6 +1,6 @@
 {
   "name": "rework-importer",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Import statements for Rework.",
   "main": "import",
   "repository": {
