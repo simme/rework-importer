@@ -18,6 +18,8 @@
   "license": "MIT",
   "dependencies": {
     "css-whitespace": "~1.1.0"
+  },
+  "devDependencies": {
+    "rework": "~0.20.2"
   }
 }
-
