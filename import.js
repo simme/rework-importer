@@ -34,7 +34,7 @@ function Import(opts) {
   if(!opts.base) {
     throw new Error("Must specify a file path");
   }
-  
+
   opts            = opts || {};
   this.opts       = opts;
   this.base       = opts.base || process.cwd();
@@ -42,7 +42,7 @@ function Import(opts) {
   this.visit      = this.visit.bind(this);
   this.importFile = this.importFile.bind(this);
   this.map        = opts.map || [];
-  
+
   //is relative?
   if(path.resolve(this.path) !== this.path) {
     this.path = path.resolve(this.base, this.path);
@@ -103,7 +103,7 @@ Import.prototype.importFile = function (declaration) {
 };
 
 Import.prototype.parseFile = function (file) {
-  var load; 
+  var load;
   //is absolute?
   if(path.resolve(file) === file) {
     load = path.join(this.base, file);
@@ -131,7 +131,7 @@ Import.prototype.parseFile = function (file) {
     base: this.base,
     path: load
   };
-  
+
   var ast = rework(data).use(module.exports(opts));
   return ast.obj.stylesheet;
 };
