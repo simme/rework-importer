@@ -15,7 +15,10 @@ var fs     = require('fs');
 
 // Not recommended way of loading styles...
 rework(fs.readFileSync('style.css'), 'utf-8')
-  .use(imprt(opts)) // opts described below
+  .use(imprt({
+    path: 'style.css',
+    base: __dirname + '/styles'
+  })) // opts described below
   .use(another-plugin)
   .use(another-plugin)
   .toString();
@@ -90,8 +93,8 @@ body {
 
 Available options are:
 
-* **path**, required option. Path to the base directory, all imports will be
-relative to this path.
+* **path**, **Required**, Path to the parsed file. This will be used to calculate relative `@imports` 
+* **base**, Defaults to the current working directory. Path to the base directory, all absolute urls (starting with "/") will be relative to this path.
 * **whitespace**, set to true if you want to use [significant
 whitespace](https://npmjs.org/package/css-whitespace) in your imported files.
 * **encoding**, if your CSS is anything other then UTF-8 encoded.

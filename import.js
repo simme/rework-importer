@@ -31,12 +31,22 @@ module.exports = function (opts) {
 // ## Importer
 //
 function Import(opts) {
+  if(!opts.base) {
+    throw new Error("Must specify a file path");
+  }
+  
   opts            = opts || {};
   this.opts       = opts;
-  this.path       = opts.path || process.cwd();
+  this.base       = opts.base || process.cwd();
+  this.path       = opts.path;
   this.visit      = this.visit.bind(this);
   this.importFile = this.importFile.bind(this);
   this.map        = opts.map || [];
+  
+  //is relative?
+  if(path.resolve(this.path) !== this.path) {
+    this.path = path.resolve(this.base, this.path);
+  }
 }
 
 Import.prototype.visit = function (node, index, arr) {
@@ -93,23 +103,35 @@ Import.prototype.importFile = function (declaration) {
 };
 
 Import.prototype.parseFile = function (file) {
-  var load = path.join(this.path, file);
+  var load; 
+  //is absolute?
+  if(path.resolve(file) === file) {
+    load = path.join(this.base, file);
+  } else {
+    load = path.resolve(path.dirname(this.path), file);
+  }
 
   // Skip circular imports.
   if (this.map.indexOf(load) !== -1) {
     return false;
   }
-
+  //console.log(this.path);
+  console.log(load);
   var data = fs.readFileSync(load, this.opts.encoding || 'utf8');
 
   if (this.opts.whitespace) {
     data = whitespace(data);
   }
 
-  // Create AST and look for imports in imported code.
-  var opts = this.opts;
   this.map.push(load);
-  opts.map = this.map;
+  // Create AST and look for imports in imported code.
+  var opts = {
+    whitespace: this.opts.whitespace,
+    map: this.map,
+    base: this.base,
+    path: load
+  };
+  
   var ast = rework(data).use(module.exports(opts));
   return ast.obj.stylesheet;
 };
