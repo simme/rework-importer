@@ -43,7 +43,7 @@ function Import(opts) {
   this.importFile = this.importFile.bind(this);
   this.map        = opts.map || [];
 
-  //is relative?
+  // is relative?
   if(path.resolve(this.path) !== this.path) {
     this.path = path.resolve(this.base, this.path);
   }
@@ -115,8 +115,6 @@ Import.prototype.parseFile = function (file) {
   if (this.map.indexOf(load) !== -1) {
     return false;
   }
-  //console.log(this.path);
-  console.log(load);
   var data = fs.readFileSync(load, this.opts.encoding || 'utf8');
 
   if (this.opts.whitespace) {
