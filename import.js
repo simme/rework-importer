@@ -65,7 +65,7 @@ Import.prototype.stylesheet = function (stylesheet) {
 Import.prototype.import = function (node, index, arr) {
   var regex    = /url\(['"]?(.*?)['"]?\)/;
   var filename = node.import.match(regex);
-  if (filename && filename[1]) {
+  if (filename && filename[1] && !isUrl(filename[1])) {
     var ast = this.parseFile(filename[1]);
     var i = 0;
     arr.splice(index, 1);
@@ -134,3 +134,7 @@ Import.prototype.parseFile = function (file) {
   return ast.obj.stylesheet;
 };
 
+
+function isUrl(url) {
+  return (/^([\w]+:)?\/\/./).test(url);
+}

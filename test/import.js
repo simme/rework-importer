@@ -62,6 +62,17 @@ suite('Import', function () {
       .toString() + '\n';
     assert.equal(r('exp5.css'), css);
   });
+
+  test('Internet urls will not break the process', function () {
+    var str = r('test6.css');
+    var css = rework(str)
+      .use(imprt({
+        path: "test6.css",
+        base: __dirname
+      }))
+      .toString() + '\n';
+    assert.equal(r('exp6.css'), css);
+  });
 });
 
 function r(name) {
