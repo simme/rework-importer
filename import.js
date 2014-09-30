@@ -35,13 +35,15 @@ function Import(opts) {
     throw new Error("Must specify a file path");
   }
 
-  opts            = opts || {};
-  this.opts       = opts;
-  this.base       = opts.base || process.cwd();
-  this.path       = opts.path;
-  this.visit      = this.visit.bind(this);
-  this.importFile = this.importFile.bind(this);
-  this.map        = opts.map || [];
+  opts                  = opts || {};
+  this.opts             = opts;
+  this.base             = opts.base || process.cwd();
+  this.path             = opts.path;
+  this.visit            = this.visit.bind(this);
+  this.importFile       = this.importFile.bind(this);
+  this.alreadyProcessed = opts.alreadyProcessed || {};
+  this.preProcess       = opts.preProcess;
+  this.postProcess      = opts.postProcess;
 
   // is relative?
   if(path.resolve(this.path) !== this.path) {
@@ -112,7 +114,7 @@ Import.prototype.parseFile = function (file) {
   }
 
   // Skip circular imports.
-  if (this.map.indexOf(load) !== -1) {
+  if (this.alreadyProcessed[load]) {
     return false;
   }
   var data = fs.readFileSync(load, this.opts.encoding || 'utf8');
@@ -121,16 +123,25 @@ Import.prototype.parseFile = function (file) {
     data = whitespace(data);
   }
 
-  this.map.push(load);
+  this.alreadyProcessed[load] = true;
   // Create AST and look for imports in imported code.
   var opts = {
     whitespace: this.opts.whitespace,
-    map: this.map,
+    alreadyProcessed: this.alreadyProcessed,
     base: this.base,
-    path: load
+    path: load,
+    preProcess: this.preProcess,
+    postProcess: this.postProcess
   };
 
-  var ast = rework(data).use(module.exports(opts));
+  var ast = rework(data);
+  if(this.preProcess) {
+    ast = this.preProcess(ast, opts);
+  }
+  ast = ast.use(module.exports(opts));
+  if(this.postProcess) {
+    ast = this.postProcess(ast, opts);
+  }
   return ast.obj.stylesheet;
 };
 

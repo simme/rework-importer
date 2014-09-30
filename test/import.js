@@ -6,6 +6,7 @@ var assert = require('assert');
 var imprt  = require('../import');
 var rework = require('rework');
 var read   = require('fs').readFileSync;
+var path   = require('path');
 
 suite('Import', function () {
   test('Correctly imports files.', function () {
@@ -72,6 +73,33 @@ suite('Import', function () {
       }))
       .toString() + '\n';
     assert.equal(r('exp6.css'), css);
+  });
+
+  test('Pre/Post process', function () {
+    var str = r('test7.css');
+    var preProcessed = [];
+    var postProcessed = [];
+    var css = rework(str)
+      .use(imprt({
+        path: "test7.css",
+        base: __dirname,
+        preProcess: function(ast, options) {
+          preProcessed.push(options.path);
+          return ast;
+        },
+        postProcess: function(ast, options) {
+          postProcessed.push(options.path);
+          return ast;
+        }
+      }))
+      .toString() + '\n';
+    assert.equal(r('exp7.css'), css);
+    assert.equal(path.relative(__dirname, preProcessed[0]), 'subdir/test2impa.css');
+    assert.equal(path.relative(__dirname, preProcessed[1]), 'subdir/test2impc.css');
+    assert.equal(path.relative(__dirname, preProcessed[2]), 'test2impb.css');
+    assert.equal(path.relative(__dirname, postProcessed[0]), 'test2impb.css');
+    assert.equal(path.relative(__dirname, postProcessed[1]), 'subdir/test2impc.css');
+    assert.equal(path.relative(__dirname, postProcessed[2]), 'subdir/test2impa.css');
   });
 });
 
